@@ -6,14 +6,10 @@
 //
 
 import UIKit
-
-// TODO: Import Photos UI
-
-// TODO: Import Parse Swift
+import PhotosUI
+import ParseSwift
 
 class PostViewController: UIViewController {
-
-    // MARK: Outlets
     @IBOutlet weak var shareButton: UIBarButtonItem!
     @IBOutlet weak var captionTextField: UITextField!
     @IBOutlet weak var previewImageView: UIImageView!
@@ -25,27 +21,32 @@ class PostViewController: UIViewController {
     }
 
     @IBAction func onPickedImageTapped(_ sender: UIBarButtonItem) {
-        // TODO: Pt 1 - Present Image picker
-
+        var config: PHPickerConfiguration = .init()
+        config.filter = .images
+        config.preferredAssetRepresentationMode = .current
+        config.selectionLimit = 1
+        
+        let picker = PHPickerViewController(configuration: config)
+        picker.delegate = self
+        present(picker, animated: true)
     }
 
     @IBAction func onShareTapped(_ sender: Any) {
-
-        // Dismiss Keyboard
         view.endEditing(true)
 
         // TODO: Pt 1 - Create and save Post
-
-
     }
 
     @IBAction func onViewTapped(_ sender: Any) {
-        // Dismiss keyboard
         view.endEditing(true)
     }
 
     private func showAlert(description: String? = nil) {
-        let alertController = UIAlertController(title: "Oops...", message: "\(description ?? "Please try again...")", preferredStyle: .alert)
+        let alertController = UIAlertController(
+            title: "Oops...",
+            message: "\(description ?? "Please try again...")",
+            preferredStyle: .alert
+        )
         let action = UIAlertAction(title: "OK", style: .default)
         alertController.addAction(action)
         present(alertController, animated: true)
@@ -53,4 +54,29 @@ class PostViewController: UIViewController {
 }
 
 // TODO: Pt 1 - Add PHPickerViewController delegate and handle picked image.
-
+extension PostViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        picker.dismiss(animated: true)
+        
+        guard let provider = results.first?.itemProvider,
+            provider.canLoadObject(ofClass: UIImage.self) else {
+            return
+        }
+        
+        provider.loadObject(ofClass: UIImage.self) { [weak self] object, error in
+            guard let image = object as? UIImage else {
+                self?.showAlert()
+                return
+            }
+            if let error = error {
+                self?.showAlert(description: error.localizedDescription)
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self?.previewImageView.image = image
+                self?.pickedImage = image
+            }
+        }
+    }
+}
