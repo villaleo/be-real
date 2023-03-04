@@ -2,8 +2,8 @@
 //  LoginViewController.swift
 //  lab-insta-parse
 //
-//  Created by Charlie Hieger on 10/29/22.
-//  Revised by Leonardo Villalobos on 3/3/23.
+//  Forked from Charlie Hieger on 11/1/22.
+//  Created by Leonardo Villalobos on 3/2/23.
 //
 
 import UIKit
@@ -17,6 +17,7 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
     }
     
+    // MARK: IBActions
     @IBAction func onLoginTapped(_ sender: Any) {
         guard let username = usernameField.text,
             let password = passwordField.text,
@@ -41,6 +42,7 @@ class LoginViewController: UIViewController {
         }
     }
 
+    // MARK: Private helpers
     private func showAlert(description: String?) {
         let alertController = UIAlertController(
             title: "Unable to Log in",
@@ -53,10 +55,13 @@ class LoginViewController: UIViewController {
     }
 
     private func showMissingFieldsAlert() {
-        let alertController = UIAlertController(title: "Opps...", message: "We need all fields filled out in order to log you in.", preferredStyle: .alert)
+        let alertController = UIAlertController(
+            title: "Opps...",
+            message: "We need all fields filled out in order to log you in.",
+            preferredStyle: .alert
+        )
         let action = UIAlertAction(title: "OK", style: .default)
         alertController.addAction(action)
         present(alertController, animated: true)
     }
 }
-

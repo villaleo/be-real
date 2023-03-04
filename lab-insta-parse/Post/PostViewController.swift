@@ -2,7 +2,8 @@
 //  PostViewController.swift
 //  lab-insta-parse
 //
-//  Created by Charlie Hieger on 11/1/22.
+//  Forked from Charlie Hieger on 11/1/22.
+//  Created by Leonardo Villalobos on 3/2/23.
 //
 
 import UIKit
@@ -16,10 +17,12 @@ class PostViewController: UIViewController {
 
     private var pickedImage: UIImage?
 
+    // MARK: Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
     }
 
+    // MARK: IBActions
     @IBAction func onPickedImageTapped(_ sender: UIBarButtonItem) {
         var config: PHPickerConfiguration = .init()
         config.filter = .images
@@ -40,7 +43,7 @@ class PostViewController: UIViewController {
         }
         
         let imageFile = ParseFile(name: "image.jpg", data: imageData)
-        var post: Post = .init(
+        let post: Post = .init(
             caption: captionTextField.text,
             user: User.current,
             imageFile: imageFile
@@ -63,6 +66,7 @@ class PostViewController: UIViewController {
         view.endEditing(true)
     }
 
+    // MARK: Private helpers
     private func showAlert(description: String? = nil) {
         let alertController = UIAlertController(
             title: "Oops...",
@@ -75,7 +79,7 @@ class PostViewController: UIViewController {
     }
 }
 
-// TODO: Pt 1 - Add PHPickerViewController delegate and handle picked image.
+// MARK: Conform PostViewController to PHPickerViewControllerDelegate
 extension PostViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(animated: true)

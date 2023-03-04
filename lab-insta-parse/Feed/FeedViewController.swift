@@ -2,7 +2,8 @@
 //  FeedViewController.swift
 //  lab-insta-parse
 //
-//  Created by Charlie Hieger on 11/1/22.
+//  Forked from Charlie Hieger on 11/1/22.
+//  Created by Leonardo Villalobos on 3/2/23.
 //
 
 import UIKit
@@ -15,9 +16,9 @@ class FeedViewController: UIViewController {
         didSet { tableView.reloadData() }
     }
 
+    // MARK: Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
-
         tableView.delegate = self
         tableView.dataSource = self
         tableView.allowsSelection = false
@@ -28,6 +29,7 @@ class FeedViewController: UIViewController {
         queryPosts()
     }
 
+    // MARK: Private helpers
     private func queryPosts() {
         let createdAt: ParseSwift.Query<Post>.Order = .descending("createdAt")
         let query = Post.query()
@@ -74,4 +76,5 @@ extension FeedViewController: UITableViewDataSource {
     }
 }
 
+// MARK: Conform FeedViewController to UITableViewDelegate
 extension FeedViewController: UITableViewDelegate { }

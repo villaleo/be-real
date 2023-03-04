@@ -23,7 +23,10 @@ class SecretManager {
     }
     
     private init() {
-        if let path = Bundle.main.path(forResource: self.fileName, ofType: self.fileExtension) {
+        if let path = Bundle.main.path(
+            forResource: self.fileName,
+            ofType: self.fileExtension
+        ) {
             self.map = NSDictionary(contentsOfFile: path)!
         } else {
             let file = "\(fileName).\(fileExtension)"

@@ -2,7 +2,8 @@
 //  PostCell.swift
 //  lab-insta-parse
 //
-//  Created by Charlie Hieger on 11/3/22.
+//  Forked from Charlie Hieger on 11/1/22.
+//  Created by Leonardo Villalobos on 3/2/23.
 //
 
 import UIKit
@@ -41,6 +42,7 @@ class PostCell: UITableViewCell {
         }
     }
 
+    // MARK: Overrides
     override func prepareForReuse() {
         super.prepareForReuse()
         DispatchQueue.main.async { [weak self] in

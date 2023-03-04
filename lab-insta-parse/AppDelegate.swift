@@ -2,8 +2,9 @@
 //  AppDelegate.swift
 //  lab-insta-parse
 //
-//  Created by Charlie Hieger on 10/29/22.
-//  Revised by Leonardo Villalobos on 3/2/23.
+//  Forked from Charlie Hieger on 11/1/22.
+//  Created by Leonardo Villalobos on 3/2/23.
+//
 
 import UIKit
 import ParseSwift
@@ -42,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     // MARK: Private helpers
-    private func initializeParse() {        
+    private func initializeParse() {
         ParseSwift.initialize(
             applicationId: SecretManager.shared.getValue(for: .applicationId),
             clientKey: SecretManager.shared.getValue(for: .clientKey),

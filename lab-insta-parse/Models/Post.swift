@@ -2,7 +2,8 @@
 //  Post.swift
 //  lab-insta-parse
 //
-//  Created by Charlie Hieger on 11/29/22.
+//  Forked from Charlie Hieger on 11/1/22.
+//  Created by Leonardo Villalobos on 3/2/23.
 //
 
 import Foundation
