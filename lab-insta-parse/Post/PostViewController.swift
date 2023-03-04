@@ -33,8 +33,30 @@ class PostViewController: UIViewController {
 
     @IBAction func onShareTapped(_ sender: Any) {
         view.endEditing(true)
-
-        // TODO: Pt 1 - Create and save Post
+        
+        guard let image = pickedImage,
+            let imageData = image.jpegData(compressionQuality: 0.1) else {
+            return
+        }
+        
+        let imageFile = ParseFile(name: "image.jpg", data: imageData)
+        var post: Post = .init(
+            caption: captionTextField.text,
+            user: User.current,
+            imageFile: imageFile
+        )
+        
+        post.save { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let post):
+                    print("Post saved: \(post)")
+                    self?.navigationController?.popViewController(animated: true)
+                case .failure(let error):
+                    self?.showAlert(description: error.localizedDescription)
+                }
+            }
+        }
     }
 
     @IBAction func onViewTapped(_ sender: Any) {
