@@ -46,13 +46,8 @@ class PostCell: UITableViewCell {
     // MARK: Overrides
     override func prepareForReuse() {
         super.prepareForReuse()
-        DispatchQueue.main.async { [weak self] in
-            self?.postImageView.image = nil
-            self?.imageDataRequest?.cancel()
-        }
     }
 }
-
 
 extension UIImageView {
     static func roundCorners(for image: UIImageView?) {
