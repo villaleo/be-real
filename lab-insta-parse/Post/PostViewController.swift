@@ -14,12 +14,14 @@ class PostViewController: UIViewController {
     @IBOutlet weak var shareButton: UIBarButtonItem!
     @IBOutlet weak var captionTextField: UITextField!
     @IBOutlet weak var previewImageView: UIImageView!
-
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     private var pickedImage: UIImage?
 
     // MARK: Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.hideSpinner()
     }
 
     // MARK: IBActions
@@ -49,11 +51,13 @@ class PostViewController: UIViewController {
             imageFile: imageFile
         )
         
+        self.showSpinner()
         post.save { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let post):
                     print("Post saved: \(post)")
+                    self?.hideSpinner()
                     self?.navigationController?.popViewController(animated: true)
                 case .failure(let error):
                     self?.showAlert(description: error.localizedDescription)
@@ -76,6 +80,16 @@ class PostViewController: UIViewController {
         let action = UIAlertAction(title: "OK", style: .default)
         alertController.addAction(action)
         present(alertController, animated: true)
+    }
+    
+    private func showSpinner() {
+        self.activityIndicator.startAnimating()
+        self.activityIndicator.isHidden = false
+    }
+    
+    private func hideSpinner() {
+        self.activityIndicator.stopAnimating()
+        self.activityIndicator.isHidden = true
     }
 }
 

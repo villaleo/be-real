@@ -375,6 +375,11 @@
                                     </imageView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="center" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="dNg-gc-Obe">
+                                <rect key="frame" x="185" y="677" width="35" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="3Vz-PV-hoS"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -405,6 +410,7 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="activityIndicator" destination="dNg-gc-Obe" id="1Pd-KF-B8A"/>
                         <outlet property="captionTextField" destination="Amx-Rq-yFI" id="KZe-ap-adl"/>
                         <outlet property="previewImageView" destination="bNm-vL-Sfi" id="v9B-n3-J9y"/>
                         <outlet property="shareButton" destination="oL3-4g-14f" id="JwQ-tm-Iuz"/>
