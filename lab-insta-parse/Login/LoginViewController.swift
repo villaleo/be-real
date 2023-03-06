@@ -30,15 +30,15 @@ class LoginViewController: UIViewController {
             !username.isEmpty,
             !password.isEmpty else
         {
-            self.toggleErrors(state: false)
+            self.showMissingFieldsError(false)
             return
         }
         
-        self.toggleErrors(state: true)
+        self.showMissingFieldsError(true)
         User.login(username: username, password: password) { result in
             switch result {
             case .success(_):
-                self.toggleErrors(state: false)
+                self.showMissingFieldsError(false)
                 NotificationCenter.default.post(
                     name: Notification.Name("login"),
                     object: nil
@@ -53,7 +53,7 @@ class LoginViewController: UIViewController {
     }
 
     // MARK: Private helpers
-    private func toggleErrors(state: Bool) {
+    private func showMissingFieldsError(_ state: Bool) {
         UIView.animate(withDuration: 0.2, delay: 0) { [self] in
             self.passwordErrorLabel.isHidden = self.passwordField.hasText || state
             self.usernameErrorLabel.isHidden = self.usernameField.hasText || state
