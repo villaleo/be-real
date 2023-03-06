@@ -14,11 +14,13 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var usernameErrorLabel: UILabel!
     @IBOutlet weak var passwordErrorLabel: UILabel!
+    @IBOutlet weak var loginErrorLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         usernameErrorLabel.isHidden = true
         passwordErrorLabel.isHidden = true
+        loginErrorLabel.isHidden = true
     }
     
     // MARK: IBActions
@@ -33,7 +35,7 @@ class LoginViewController: UIViewController {
         }
         
         animateErrorLabels(areHidden: true)
-        User.login(username: username, password: password) { [weak self] result in
+        User.login(username: username, password: password) { result in
             switch result {
             case .success(let user):
                 print("Logged in as \(user)")
@@ -42,23 +44,15 @@ class LoginViewController: UIViewController {
                     object: nil
                 )
             case .failure(let error):
-                self?.showAlert(description: error.localizedDescription)
+                self.loginErrorLabel.text = error.description
+                UIView.animate(withDuration: 0.2, delay: 0) { [self] in
+                    self.loginErrorLabel.isHidden = false
+                }
             }
         }
     }
 
     // MARK: Private helpers
-    private func showAlert(description: String?) {
-        let alertController = UIAlertController(
-            title: "Unable to Log in",
-            message: description ?? "Unknown error",
-            preferredStyle: .alert
-        )
-        let action = UIAlertAction(title: "OK", style: .default)
-        alertController.addAction(action)
-        present(alertController, animated: true)
-    }
-
     private func animateErrorLabels(areHidden: Bool) {
         UIView.animate(withDuration: 0.2, delay: 0) { [self] in
             self.passwordErrorLabel.isHidden = self.passwordField.hasText || areHidden
