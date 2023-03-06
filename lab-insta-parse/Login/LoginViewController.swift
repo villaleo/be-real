@@ -30,30 +30,33 @@ class LoginViewController: UIViewController {
             !username.isEmpty,
             !password.isEmpty else
         {
-            self.showMissingFieldsError(false)
+            self.missingFieldsErrorsAreHidden(false)
             return
         }
         
-        self.showMissingFieldsError(true)
+        self.missingFieldsErrorsAreHidden(true)
         User.login(username: username, password: password) { result in
             switch result {
             case .success(_):
-                self.showMissingFieldsError(false)
                 NotificationCenter.default.post(
                     name: Notification.Name("login"),
                     object: nil
                 )
+                UIView.animate(withDuration: 0.2, delay: 0) { [weak self] in
+                    self?.loginErrorLabel.isHidden = true
+                }
             case .failure(let error):
                 self.loginErrorLabel.text = error.message
-                UIView.animate(withDuration: 0.2, delay: 0) { [self] in
-                    self.loginErrorLabel.isHidden = false
+                UIView.animate(withDuration: 0.2, delay: 0) { [weak self] in
+                    self?.loginErrorLabel.isHidden = false
                 }
+                return
             }
         }
     }
 
     // MARK: Private helpers
-    private func showMissingFieldsError(_ state: Bool) {
+    private func missingFieldsErrorsAreHidden(_ state: Bool) {
         UIView.animate(withDuration: 0.2, delay: 0) { [self] in
             self.passwordErrorLabel.isHidden = self.passwordField.hasText || state
             self.usernameErrorLabel.isHidden = self.usernameField.hasText || state
