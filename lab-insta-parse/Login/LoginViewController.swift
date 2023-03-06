@@ -18,9 +18,9 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        usernameErrorLabel.isHidden = true
-        passwordErrorLabel.isHidden = true
-        loginErrorLabel.isHidden = true
+        self.usernameErrorLabel.isHidden = true
+        self.passwordErrorLabel.isHidden = true
+        self.loginErrorLabel.isHidden = true
     }
     
     // MARK: IBActions
@@ -30,21 +30,21 @@ class LoginViewController: UIViewController {
             !username.isEmpty,
             !password.isEmpty else
         {
-            animateErrorLabels(areHidden: false)
+            self.toggleErrors(state: false)
             return
         }
         
-        animateErrorLabels(areHidden: true)
+        self.toggleErrors(state: true)
         User.login(username: username, password: password) { result in
             switch result {
-            case .success(let user):
-                print("Logged in as \(user)")
+            case .success(_):
+                self.toggleErrors(state: false)
                 NotificationCenter.default.post(
                     name: Notification.Name("login"),
                     object: nil
                 )
             case .failure(let error):
-                self.loginErrorLabel.text = error.description
+                self.loginErrorLabel.text = error.message
                 UIView.animate(withDuration: 0.2, delay: 0) { [self] in
                     self.loginErrorLabel.isHidden = false
                 }
@@ -53,10 +53,10 @@ class LoginViewController: UIViewController {
     }
 
     // MARK: Private helpers
-    private func animateErrorLabels(areHidden: Bool) {
+    private func toggleErrors(state: Bool) {
         UIView.animate(withDuration: 0.2, delay: 0) { [self] in
-            self.passwordErrorLabel.isHidden = self.passwordField.hasText || areHidden
-            self.usernameErrorLabel.isHidden = self.usernameField.hasText || areHidden
+            self.passwordErrorLabel.isHidden = self.passwordField.hasText || state
+            self.usernameErrorLabel.isHidden = self.usernameField.hasText || state
         }
     }
 }
