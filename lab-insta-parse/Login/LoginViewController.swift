@@ -12,9 +12,13 @@ import ParseSwift
 class LoginViewController: UIViewController {
     @IBOutlet weak var usernameField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
-
+    @IBOutlet weak var usernameErrorLabel: UILabel!
+    @IBOutlet weak var passwordErrorLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        usernameErrorLabel.isHidden = true
+        passwordErrorLabel.isHidden = true
     }
     
     // MARK: IBActions
@@ -24,10 +28,11 @@ class LoginViewController: UIViewController {
             !username.isEmpty,
             !password.isEmpty else
         {
-            showMissingFieldsAlert()
+            animateErrorLabels(areHidden: false)
             return
         }
-
+        
+        animateErrorLabels(areHidden: true)
         User.login(username: username, password: password) { [weak self] result in
             switch result {
             case .success(let user):
@@ -54,14 +59,10 @@ class LoginViewController: UIViewController {
         present(alertController, animated: true)
     }
 
-    private func showMissingFieldsAlert() {
-        let alertController = UIAlertController(
-            title: "Opps...",
-            message: "We need all fields filled out in order to log you in.",
-            preferredStyle: .alert
-        )
-        let action = UIAlertAction(title: "OK", style: .default)
-        alertController.addAction(action)
-        present(alertController, animated: true)
+    private func animateErrorLabels(areHidden: Bool) {
+        UIView.animate(withDuration: 0.2, delay: 0) { [self] in
+            self.passwordErrorLabel.isHidden = self.passwordField.hasText || areHidden
+            self.usernameErrorLabel.isHidden = self.usernameField.hasText || areHidden
+        }
     }
 }
