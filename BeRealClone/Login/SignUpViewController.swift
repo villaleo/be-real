@@ -47,7 +47,7 @@ class SignUpViewController: UIViewController {
                 }
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(
-                        name: Notification.Name("login"),
+                        name: Notification.Name("showFeed"),
                         object: nil
                     )
                 }

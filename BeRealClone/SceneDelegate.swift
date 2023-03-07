@@ -26,13 +26,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let _ = (scene as? UIWindowScene) else { return }
 
         NotificationCenter.default.addObserver(
-            forName: Notification.Name("login"),
+            forName: Notification.Name("showFeed"),
             object: nil,
-            queue: OperationQueue.main
-        ) { [weak self] _ in self?.login() }
+            queue: OperationQueue.main,
+            using: { [weak self] _ in
+                self?.showFeed()
+            }
+        )
+        
+        if User.current != nil {
+            showFeed()
+        }
     }
 
-    private func login() {
+    private func showFeed() {
         let storyboard = UIStoryboard(
             name: Constants.storyboardIdentifier,
             bundle: nil
@@ -40,6 +47,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window?.rootViewController = storyboard.instantiateViewController(
             withIdentifier: Constants.feedNavigationControllerIdentifier
         )
+    }
+    
+    private func logout() {
+        
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
