@@ -94,7 +94,7 @@
                                                     <segue destination="Hbv-xC-mao" kind="presentation" id="Zji-6F-mnW"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="An error occurred when logging in." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5I3-95-ht1" userLabel="Other error">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="An error occurred when logging in." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5I3-95-ht1" userLabel="Other error">
                                                 <rect key="frame" x="0.0" y="128" width="342" height="18"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <color key="textColor" systemColor="systemRedColor"/>
@@ -104,10 +104,21 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" alpha="0.75" contentMode="center" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="yeX-kk-Lon">
+                                <rect key="frame" x="177.66666666666666" y="404.66666666666669" width="35" height="35"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="eag-z9-f92"/>
+                                    <constraint firstAttribute="width" constant="35" id="zcW-o3-zcP"/>
+                                </constraints>
+                                <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="yeX-kk-Lon" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="7S9-k5-5jx"/>
+                            <constraint firstItem="yeX-kk-Lon" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="DkQ-eN-s9x"/>
                             <constraint firstItem="4iE-h0-KKh" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="0.7" id="dqW-kv-bFa"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="4iE-h0-KKh" secondAttribute="trailing" constant="24" id="kOy-2Y-eSM"/>
                             <constraint firstItem="4iE-h0-KKh" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="24" id="zso-df-2l6"/>
@@ -117,6 +128,7 @@
                         <barButtonItem key="backBarButtonItem" title=" " id="8UY-v9-SbL"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="loadingIndicator" destination="yeX-kk-Lon" id="fL5-aD-4wo"/>
                         <outlet property="loginErrorLabel" destination="5I3-95-ht1" id="OrE-TH-69a"/>
                         <outlet property="passwordErrorLabel" destination="9tp-g5-Y3F" id="0AB-2p-uYb"/>
                         <outlet property="passwordField" destination="nAU-Ud-dn0" id="zTX-IY-xM4"/>
@@ -207,7 +219,7 @@
                                                     <action selector="onSignUpTapped:" destination="Hbv-xC-mao" eventType="touchUpInside" id="VtW-cZ-Olf"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="An error occurred when signing up." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SdC-UT-p7k" userLabel="Username Error">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="An error occurred when signing up." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SdC-UT-p7k" userLabel="Username Error">
                                                 <rect key="frame" x="0.0" y="64" width="342" height="18"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <color key="textColor" systemColor="systemRedColor"/>

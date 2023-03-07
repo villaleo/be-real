@@ -41,19 +41,20 @@ class SignUpViewController: UIViewController {
         user.signup { [weak self] result in
             switch result {
             case .success(_):
-                NotificationCenter.default.post(
-                    name: Notification.Name("login"),
-                    object: nil
-                )
                 UIView.animate(withDuration: 0.2, delay: 0) { [weak self] in
                     self?.signupErrorLabel.isHidden = true
+                }
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(
+                        name: Notification.Name("login"),
+                        object: nil
+                    )
                 }
             case .failure(let error):
                 self?.signupErrorLabel.text = error.message
                 UIView.animate(withDuration: 0.2, delay: 0) { [weak self] in
                     self?.signupErrorLabel.isHidden = false
                 }
-                return
             }
         }
     }
