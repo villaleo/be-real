@@ -1,6 +1,6 @@
 //
 //  Secrets.swift
-//  lab-insta-parse
+//  BeRealClone
 //
 // Created by Leonardo Villalobos on 3/5/23.
 //
