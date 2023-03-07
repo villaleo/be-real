@@ -11,7 +11,6 @@ import PhotosUI
 import ParseSwift
 
 class PostViewController: UIViewController {
-    @IBOutlet weak var shareButton: UIBarButtonItem!
     @IBOutlet weak var captionTextField: UITextField!
     @IBOutlet weak var previewImageView: UIImageView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -22,10 +21,11 @@ class PostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hideSpinner()
+        previewImageView.isHidden = true
     }
 
     // MARK: IBActions
-    @IBAction func onPickedImageTapped(_ sender: UIBarButtonItem) {
+    @IBAction func onImagePicked(_ sender: Any) {
         var config: PHPickerConfiguration = .init()
         config.filter = .images
         config.preferredAssetRepresentationMode = .current
@@ -35,8 +35,8 @@ class PostViewController: UIViewController {
         picker.delegate = self
         present(picker, animated: true)
     }
-
-    @IBAction func onShareTapped(_ sender: Any) {
+    
+    @IBAction func onShareTapped(_ sender: UIButton) {
         view.endEditing(true)
         
         guard let image = pickedImage,
@@ -58,13 +58,14 @@ class PostViewController: UIViewController {
                 case .success(let post):
                     print("Post saved: \(post)")
                     self?.hideSpinner()
-                    self?.navigationController?.popViewController(animated: true)
+                    self?.navigationController?.popViewController(animated: false)
                 case .failure(let error):
                     self?.showAlert(description: error.localizedDescription)
                 }
             }
         }
     }
+    
 
     @IBAction func onViewTapped(_ sender: Any) {
         view.endEditing(true)
@@ -116,6 +117,7 @@ extension PostViewController: PHPickerViewControllerDelegate {
             DispatchQueue.main.async {
                 self?.previewImageView.image = image
                 self?.pickedImage = image
+                self?.previewImageView.isHidden = false
             }
         }
     }
