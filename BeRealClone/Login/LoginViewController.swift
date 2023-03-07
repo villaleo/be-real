@@ -15,12 +15,15 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var usernameErrorLabel: UILabel!
     @IBOutlet weak var passwordErrorLabel: UILabel!
     @IBOutlet weak var loginErrorLabel: UILabel!
+    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     
+    // MARK: Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.usernameErrorLabel.isHidden = true
-        self.passwordErrorLabel.isHidden = true
-        self.loginErrorLabel.isHidden = true
+        usernameErrorLabel.isHidden = true
+        passwordErrorLabel.isHidden = true
+        loginErrorLabel.isHidden = true
+        hideSpinner()
     }
     
     // MARK: IBActions
@@ -30,27 +33,30 @@ class LoginViewController: UIViewController {
             !username.isEmpty,
             !password.isEmpty else
         {
-            self.missingFieldsErrorsAreHidden(false)
+            missingFieldsErrorsAreHidden(false)
             return
         }
         
-        self.missingFieldsErrorsAreHidden(true)
-        User.login(username: username, password: password) { result in
+        missingFieldsErrorsAreHidden(true)
+        showSpinner()
+        User.login(username: username, password: password) { [self] result in
             switch result {
             case .success(_):
-                NotificationCenter.default.post(
-                    name: Notification.Name("login"),
-                    object: nil
-                )
                 UIView.animate(withDuration: 0.2, delay: 0) { [weak self] in
                     self?.loginErrorLabel.isHidden = true
                 }
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(
+                        name: Notification.Name("login"),
+                        object: nil
+                    )
+                }
             case .failure(let error):
-                self.loginErrorLabel.text = error.message
+                hideSpinner()
+                loginErrorLabel.text = error.message
                 UIView.animate(withDuration: 0.2, delay: 0) { [weak self] in
                     self?.loginErrorLabel.isHidden = false
                 }
-                return
             }
         }
     }
@@ -58,8 +64,18 @@ class LoginViewController: UIViewController {
     // MARK: Private helpers
     private func missingFieldsErrorsAreHidden(_ state: Bool) {
         UIView.animate(withDuration: 0.2, delay: 0) { [self] in
-            self.passwordErrorLabel.isHidden = self.passwordField.hasText || state
-            self.usernameErrorLabel.isHidden = self.usernameField.hasText || state
+            passwordErrorLabel.isHidden = passwordField.hasText || state
+            usernameErrorLabel.isHidden = usernameField.hasText || state
         }
+    }
+    
+    private func showSpinner() {
+        loadingIndicator.startAnimating()
+        loadingIndicator.isHidden = false
+    }
+    
+    private func hideSpinner() {
+        loadingIndicator.stopAnimating()
+        loadingIndicator.isHidden = true
     }
 }
