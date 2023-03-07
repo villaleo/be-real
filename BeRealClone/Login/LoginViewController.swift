@@ -2,8 +2,7 @@
 //  LoginViewController.swift
 //  lab-insta-parse
 //
-//  Forked from Charlie Hieger on 11/1/22.
-//  Created by Leonardo Villalobos on 3/2/23.
+//  Created by Leonardo Villalobos on 3/6/23.
 //
 
 import UIKit

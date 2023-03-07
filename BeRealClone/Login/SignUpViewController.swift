@@ -17,6 +17,7 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var passwordErrorLabel: UILabel!
     @IBOutlet weak var signupErrorLabel: UILabel!
     
+    // MARK: Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
         missingFieldsErrorsAreHidden(true)
@@ -26,11 +27,11 @@ class SignUpViewController: UIViewController {
     // MARK: IBActions
     @IBAction func onSignUpTapped(_ sender: Any) {
         guard let username = usernameField.text,
-              let email = emailField.text,
-              let password = passwordField.text,
-              !username.isEmpty,
-              !email.isEmpty,
-              !password.isEmpty else
+            let email = emailField.text,
+            let password = passwordField.text,
+            !username.isEmpty,
+            !email.isEmpty,
+            !password.isEmpty else
         {
             missingFieldsErrorsAreHidden(false)
             return

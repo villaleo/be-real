@@ -2,8 +2,7 @@
 //  PostCell.swift
 //  lab-insta-parse
 //
-//  Forked from Charlie Hieger on 11/1/22.
-//  Created by Leonardo Villalobos on 3/2/23.
+//  Created by Leonardo Villalobos on 3/6/23.
 //
 
 import UIKit
@@ -25,14 +24,13 @@ class PostCell: UITableViewCell {
         
         if let imageFile = post.imageFile,
             let imageUrl = imageFile.url {
-            imageDataRequest = AF.request(imageUrl).responseImage {
-                [weak self] response in
+            imageDataRequest = AF.request(imageUrl).responseImage { [weak self] response in
                 switch response.result {
                 case .success(let image):
                     self?.postImageView.image = image
                     UIImageView.roundCorners(for: self?.postImageView)
                 case .failure(let error):
-                    print("Error fetching image: \(error.localizedDescription)")
+                    fatalError("\(error.localizedDescription)")
                     break
                 }
             }
