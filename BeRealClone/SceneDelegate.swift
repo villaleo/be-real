@@ -8,13 +8,19 @@
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    public enum Scenes: String {
+        typealias RawValue = String
+        
+        /// Switch to the feed Navigation Controller
+        case feed = "showFeed"
+        /// Switch to the login Navigation Controller
+        case login = "showLogin"
+    }
+    
     private enum Constants {
         static let loginNavigationControllerIdentifier = "LoginNavigationController"
         static let feedNavigationControllerIdentifier = "FeedNavigationController"
         static let storyboardIdentifier = "Main"
-        
-        static let showFeed = "showFeed"
-        static let logout = "logout"
     }
 
     var window: UIWindow?
@@ -36,7 +42,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     private func addObserversToNotificationCenter() {
         NotificationCenter.default.addObserver(
-            forName: Notification.Name(Constants.showFeed),
+            forName: Notification.Name(Scenes.feed.rawValue),
             object: nil,
             queue: OperationQueue.main,
             using: { [weak self] _ in
@@ -44,11 +50,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
         )
         NotificationCenter.default.addObserver(
-            forName: Notification.Name(Constants.logout),
+            forName: Notification.Name(Scenes.login.rawValue),
             object: nil,
             queue: OperationQueue.main,
             using: { [weak self] _ in
-                self?.logout()
+                self?.showLogin()
             }
         )
     }
@@ -63,7 +69,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         )
     }
     
-    private func logout() {
+    private func showLogin() {
         User.logout { [weak self] result in
             switch result {
             case .success():
@@ -78,6 +84,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 fatalError("\(error.message)")
             }
         }
+    }
+    
+    static func showScene(named: Scenes, withData: Any? = nil) {
+        NotificationCenter.default.post(
+            name: Notification.Name(named.rawValue),
+            object: withData
+        )
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

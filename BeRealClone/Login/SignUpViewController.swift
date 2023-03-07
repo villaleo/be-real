@@ -45,12 +45,7 @@ class SignUpViewController: UIViewController {
                 UIView.animate(withDuration: 0.2, delay: 0) { [weak self] in
                     self?.signupErrorLabel.isHidden = true
                 }
-                DispatchQueue.main.async {
-                    NotificationCenter.default.post(
-                        name: Notification.Name("showFeed"),
-                        object: nil
-                    )
-                }
+                DispatchQueue.main.async { SceneDelegate.showScene(named: .feed) }
             case .failure(let error):
                 self?.signupErrorLabel.text = error.message
                 UIView.animate(withDuration: 0.2, delay: 0) { [weak self] in

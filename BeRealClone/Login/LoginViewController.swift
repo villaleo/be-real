@@ -44,12 +44,7 @@ class LoginViewController: UIViewController {
                 UIView.animate(withDuration: 0.2, delay: 0) { [weak self] in
                     self?.loginErrorLabel.isHidden = true
                 }
-                DispatchQueue.main.async {
-                    NotificationCenter.default.post(
-                        name: Notification.Name("showFeed"),
-                        object: nil
-                    )
-                }
+                DispatchQueue.main.async { SceneDelegate.showScene(named: .feed) }
             case .failure(let error):
                 hideSpinner()
                 loginErrorLabel.text = error.message
