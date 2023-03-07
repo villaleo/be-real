@@ -12,6 +12,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         static let loginNavigationControllerIdentifier = "LoginNavigationController"
         static let feedNavigationControllerIdentifier = "FeedNavigationController"
         static let storyboardIdentifier = "Main"
+        
+        static let showFeed = "showFeed"
+        static let logout = "logout"
     }
 
     var window: UIWindow?
@@ -25,18 +28,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
 
+        addObserversToNotificationCenter()
+        if User.current != nil {
+            showFeed()
+        }
+    }
+    
+    private func addObserversToNotificationCenter() {
         NotificationCenter.default.addObserver(
-            forName: Notification.Name("showFeed"),
+            forName: Notification.Name(Constants.showFeed),
             object: nil,
             queue: OperationQueue.main,
             using: { [weak self] _ in
                 self?.showFeed()
             }
         )
-        
-        if User.current != nil {
-            showFeed()
-        }
+        NotificationCenter.default.addObserver(
+            forName: Notification.Name(Constants.logout),
+            object: nil,
+            queue: OperationQueue.main,
+            using: { [weak self] _ in
+                self?.logout()
+            }
+        )
     }
 
     private func showFeed() {
@@ -50,7 +64,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private func logout() {
-        
+        User.logout { [weak self] result in
+            switch result {
+            case .success():
+                let storyboard = UIStoryboard(
+                    name: Constants.storyboardIdentifier,
+                    bundle: nil
+                )
+                self?.window?.rootViewController = storyboard.instantiateViewController(
+                    withIdentifier: Constants.loginNavigationControllerIdentifier
+                )
+            case .failure(let error):
+                fatalError("\(error.message)")
+            }
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
