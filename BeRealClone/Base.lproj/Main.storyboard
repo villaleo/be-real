@@ -228,8 +228,12 @@
                     </view>
                     <navigationItem key="navigationItem" id="7Of-Aa-Qfu"/>
                     <connections>
+                        <outlet property="emailErrorLabel" destination="Huy-lq-Jpp" id="rie-3l-R51"/>
                         <outlet property="emailField" destination="ZRk-ag-gPv" id="eeW-SS-a2R"/>
+                        <outlet property="passwordErrorLabel" destination="rem-UG-h5u" id="ffj-rr-SZU"/>
                         <outlet property="passwordField" destination="ro2-Cf-yEI" id="reD-Oz-O1I"/>
+                        <outlet property="signupErrorLabel" destination="SdC-UT-p7k" id="NZ5-zv-fjN"/>
+                        <outlet property="usernameErrorLabel" destination="pZJ-JX-c8t" id="Dgu-p0-9el"/>
                         <outlet property="usernameField" destination="5pD-xS-TXs" id="8F9-MB-fU1"/>
                     </connections>
                 </viewController>
