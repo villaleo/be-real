@@ -27,6 +27,24 @@ class FeedViewController: UIViewController {
         super.viewWillAppear(animated)
         queryPosts()
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "SignoutUser" {
+            if let username = User.current?.username {
+                let alertController = UIAlertController(
+                    title: "Logout?",
+                    message: "This will log out user '\(username)'.",
+                    preferredStyle: .alert
+                )
+                alertController.addAction(.init(title: "Logout", style: .default, handler: { _ in
+                    try! User.logout()
+                    SceneDelegate.showScene(named: .login)
+                }))
+                alertController.addAction(.init(title: "Cancel", style: .default))
+                present(alertController, animated: true)
+            }
+        }
+    }
 
     // MARK: Private helpers
     private func queryPosts() {
@@ -41,20 +59,9 @@ class FeedViewController: UIViewController {
             case .success(let posts):
                 self?.posts = posts
             case .failure(let error):
-                self?.showAlert(description: error.localizedDescription)
+                print("Error: \(error.localizedDescription)")
             }
         }
-    }
-
-    private func showAlert(description: String? = nil) {
-        let alertController = UIAlertController(
-            title: "Oops...",
-            message: "\(description ?? "Please try again...")",
-            preferredStyle: .alert
-        )
-        let action = UIAlertAction(title: "OK", style: .default)
-        alertController.addAction(action)
-        present(alertController, animated: true)
     }
 }
 

@@ -258,6 +258,7 @@
             <objects>
                 <navigationController storyboardIdentifier="LoginNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="Hot-nK-RXH" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="bNO-QH-P1R"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="bAT-vC-jRy">
                         <rect key="frame" x="0.0" y="47" width="390" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -365,6 +366,12 @@
                     </view>
                     <navigationItem key="navigationItem" title="BeReal." id="LaS-Bo-eDE">
                         <barButtonItem key="backBarButtonItem" title=" " id="3DH-ur-kyc"/>
+                        <barButtonItem key="leftBarButtonItem" image="arrow.left.square" catalog="system" id="gxn-Wp-aZk">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <segue destination="Hot-nK-RXH" kind="showDetail" identifier="SignoutUser" id="ZnX-O1-N2W"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="plus.viewfinder" catalog="system" id="nbY-mp-bGb">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
@@ -378,7 +385,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U0B-Ms-PlK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="990.76923076923072" y="711.61137440758296"/>
+            <point key="canvasLocation" x="-605" y="406"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Yly-CZ-AY4">
@@ -402,7 +409,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bic-nN-P4M" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="254" y="712"/>
+            <point key="canvasLocation" x="-1534" y="406"/>
         </scene>
         <!--Post View Controller-->
         <scene sceneID="E77-Ui-z4h">
@@ -538,10 +545,11 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1748" y="712"/>
+            <point key="canvasLocation" x="254" y="722"/>
         </scene>
     </scenes>
     <resources>
+        <image name="arrow.left.square" catalog="system" width="128" height="114"/>
         <image name="photo.artframe" catalog="system" width="128" height="93"/>
         <image name="plus.viewfinder" catalog="system" width="128" height="115"/>
         <systemColor name="quaternaryLabelColor">
