@@ -13,6 +13,7 @@ class PostViewController: UIViewController {
     @IBOutlet weak var captionTextField: UITextField!
     @IBOutlet weak var previewImageView: UIImageView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var errorLabel: UILabel!
     
     private var pickedImage: UIImage?
 
@@ -21,6 +22,7 @@ class PostViewController: UIViewController {
         super.viewDidLoad()
         self.hideSpinner()
         previewImageView.isHidden = true
+        errorLabel.isHidden = true
     }
 
     // MARK: IBActions
@@ -35,11 +37,34 @@ class PostViewController: UIViewController {
         present(picker, animated: true)
     }
     
+    @IBAction func onCameraPicked(_ sender: UIButton) {
+        guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
+            errorLabel.text = "Camera unavailable. Please try again."
+            UIView.animate(withDuration: 0.2, delay: 0) { [weak self] in
+                self?.errorLabel.isHidden = false
+            }
+            return
+        }
+        
+        let imagePicker = UIImagePickerController()
+        imagePicker.sourceType = .camera
+        imagePicker.delegate = self
+        present(imagePicker, animated: true)
+    }
+    
     @IBAction func onShareTapped(_ sender: UIButton) {
         view.endEditing(true)
         
+        UIView.animate(withDuration: 0.2, delay: 0) { [weak self] in
+            self?.errorLabel.isHidden = true
+        }
+        
         guard let image = pickedImage,
             let imageData = image.jpegData(compressionQuality: 0.1) else {
+            errorLabel.text = "You must select an image to upload!"
+            UIView.animate(withDuration: 0.2, delay: 0) { [weak self] in
+                self?.errorLabel.isHidden = false
+            }
             return
         }
         
@@ -57,9 +82,12 @@ class PostViewController: UIViewController {
                 case .success(let post):
                     print("Post saved: \(post)")
                     self?.hideSpinner()
-                    self?.navigationController?.popViewController(animated: false)
+                    self?.navigationController?.popViewController(animated: true)
                 case .failure(let error):
-                    self?.showAlert(description: error.localizedDescription)
+                    self?.errorLabel.text = error.localizedDescription
+                    UIView.animate(withDuration: 0.2, delay: 0) { [weak self] in
+                        self?.errorLabel.isHidden = false
+                    }
                 }
             }
         }
@@ -71,17 +99,6 @@ class PostViewController: UIViewController {
     }
 
     // MARK: Private helpers
-    private func showAlert(description: String? = nil) {
-        let alertController = UIAlertController(
-            title: "Oops...",
-            message: "\(description ?? "Please try again...")",
-            preferredStyle: .alert
-        )
-        let action = UIAlertAction(title: "OK", style: .default)
-        alertController.addAction(action)
-        present(alertController, animated: true)
-    }
-    
     private func showSpinner() {
         self.activityIndicator.startAnimating()
         self.activityIndicator.isHidden = false
@@ -95,8 +112,15 @@ class PostViewController: UIViewController {
 
 // MARK: Conform PostViewController to PHPickerViewControllerDelegate
 extension PostViewController: PHPickerViewControllerDelegate {
-    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+    func picker(
+        _ picker: PHPickerViewController,
+        didFinishPicking results: [PHPickerResult]
+    ) {
         picker.dismiss(animated: true)
+        
+        UIView.animate(withDuration: 0.2, delay: 0) { [weak self] in
+            self?.errorLabel.isHidden = true
+        }
         
         guard let provider = results.first?.itemProvider,
             provider.canLoadObject(ofClass: UIImage.self) else {
@@ -105,11 +129,17 @@ extension PostViewController: PHPickerViewControllerDelegate {
         
         provider.loadObject(ofClass: UIImage.self) { [weak self] object, error in
             guard let image = object as? UIImage else {
-                self?.showAlert()
+                self?.errorLabel.text = "Unable to load image. Please try again."
+                UIView.animate(withDuration: 0.2, delay: 0) { [weak self] in
+                    self?.errorLabel.isHidden = false
+                }
                 return
             }
             if let error = error {
-                self?.showAlert(description: error.localizedDescription)
+                self?.errorLabel.text = error.localizedDescription
+                UIView.animate(withDuration: 0.2, delay: 0) { [weak self] in
+                    self?.errorLabel.isHidden = false
+                }
                 return
             }
             
@@ -119,5 +149,31 @@ extension PostViewController: PHPickerViewControllerDelegate {
                 self?.previewImageView.isHidden = false
             }
         }
+    }
+}
+
+// MARK: Conform PostViewController to UIImagePickerControllerDelegate & UINavigationControllerDelegate
+extension PostViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(
+        _ picker: UIImagePickerController,
+        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]
+    ) {
+        picker.dismiss(animated: true)
+        
+        UIView.animate(withDuration: 0.2, delay: 0) { [weak self] in
+            self?.errorLabel.isHidden = true
+        }
+        
+        guard let image = info[.originalImage] as? UIImage else {
+            errorLabel.text = "Unable to load the image. Please try again."
+            UIView.animate(withDuration: 0.2, delay: 0) { [weak self] in
+                self?.errorLabel.isHidden = false
+            }
+            return
+        }
+        
+        previewImageView.image = image
+        previewImageView.isHidden = false
+        pickedImage = image
     }
 }
