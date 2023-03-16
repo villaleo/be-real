@@ -39,6 +39,19 @@ class PostCell: UITableViewCell {
         if let date = post.createdAt {
             dateLabel.text = DateFormatter.postFormatter.string(from: date)
         }
+        
+        let blurEffect = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+        blurEffect.frame = self.postImageView.bounds
+        if let currentUser = User.current,
+            let lastPostedDate = currentUser.lastPostedDate,
+            let postCreatedDate = post.createdAt,
+            let diffHours = Calendar.current.dateComponents([.hour], from: postCreatedDate, to: lastPostedDate).hour
+        {
+            blurEffect.isHidden = abs(diffHours) < 24
+        } else {
+            blurEffect.isHidden = false
+        }
+        self.postImageView.addSubview(blurEffect)
     }
     
     // MARK: Overrides

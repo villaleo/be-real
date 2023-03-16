@@ -34,6 +34,7 @@ class FeedViewController: UIViewController {
         let query = Post.query()
             .include("user")
             .order(createdAt)
+            .limit(10)
         
         query.find { [weak self] result in
             switch result {
