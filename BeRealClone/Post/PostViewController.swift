@@ -78,17 +78,18 @@ class PostViewController: UIViewController {
         self.showSpinner()
         post.save { [weak self] result in
             DispatchQueue.main.async {
-                switch result {
-                case .success(let post):
-                    print("Post saved: \(post)")
-                    self?.hideSpinner()
-                    self?.navigationController?.popViewController(animated: true)
-                case .failure(let error):
-                    self?.errorLabel.text = error.localizedDescription
-                    UIView.animate(withDuration: 0.2, delay: 0) { [weak self] in
-                        self?.errorLabel.isHidden = false
+                self?.match(result, then: { _ in
+                    if var currentUser = User.current {
+                        currentUser.lastPostedDate = Date()
+                        currentUser.save { [weak self] result in
+                            self?.match(result, then: { _ in
+                                DispatchQueue.main.async {
+                                self?.hideSpinner()
+                                self?.navigationController?.popViewController(animated: true)
+                            }})
+                        }
                     }
-                }
+                })
             }
         }
     }
@@ -107,6 +108,22 @@ class PostViewController: UIViewController {
     private func hideSpinner() {
         self.activityIndicator.stopAnimating()
         self.activityIndicator.isHidden = true
+    }
+    
+    private func showAnimatedError(with error: ParseError) {
+        self.errorLabel.text = error.localizedDescription
+        UIView.animate(withDuration: 0.2, delay: 0) { [weak self] in
+            self?.errorLabel.isHidden = false
+        }
+    }
+    
+    private func match<T>(_ result: Result<T, ParseError>, then: (_ result: T) -> Void) {
+        switch result {
+        case .success(let data):
+            then(data)
+        case .failure(let error):
+            showAnimatedError(with: error)
+        }
     }
 }
 
