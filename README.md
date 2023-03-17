@@ -1,9 +1,8 @@
-# Project 5 - *BeReal Clone*
+# Project 6 - *BeReal*
 
 Submitted by: **Leonardo Villalobos**
 
-**BeReal Clone** is a clone of the app BeReal. It allows users to signup, login,
-and upload posts from their camera roll.
+**BeReal** is an app that allows users to signup, login, and create posts.
 
 Time spent: **3** hours spent in total
 
@@ -11,36 +10,24 @@ Time spent: **3** hours spent in total
 
 The following **required** functionality is completed:
 
-- [X] User can register a new account
-- [X] User can log in with newly created account
-- [X] App has a feed of posts when user logs in
-- [X] User can upload a new post which takes in a picture from photo library and a caption	
+- [X] User can launch camera to take photo instead of photo library
+- [X] User session persists when application is closed and relaunched
+- [X] Users are able to log out and return to sign in page
+- [X] Users are NOT able to see other photos until they upload their own	
  
 The following **optional** features are implemented:
 
-- [X] User stays logged in when app is closed and open again
-
-The following **additional** features are implemented:
-
-- [X] User is able to see errors when logging in with incorrect credentials
-- [X] Errors are shown within the view instead of an alert
-- [X] UIActivityIndicatorViews are used to show something is happening in the background
+- [ ] User receive notifcation when it is time to post
+- [ ] Users can make comments and view comments in posts	
 
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
 
-![](assets/images/demo.gif)
+<img src='assets/images/demo.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-GIF created with XCode Simulator screen recording tool
-
-## Notes
-
-I had trouble hiding the login error label that shows up when entering incorrect credentials,
-and figured out that it was because the code that executed after the `.success(_)` arm from the
-`switch` had to be exectued on the main thread. I was trying to perform some visual effects in the
-`.success(_)` arm, but none of it was showing up. The solution was to execute the call to
-`NotificationCenter.default.post(name:object)` in the main thread.
+<!-- Replace this with whatever GIF tool you used! -->
+GIF created with Screen Recorder tool on iPhone
 
 ## License
 
